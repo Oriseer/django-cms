@@ -1,0 +1,33 @@
+{% extends 'client/base.html' %}
+{% block content %}
+
+        <div class="container-fluid py-5 px-5 m-3">
+            <div class="row">
+                <div class="col col-2">
+                    <a href="{% url 'client:client-list' %}"class="btn btn-primary btn-lg mb-3 px-5">Home</a>
+                </div>
+                <div class="col col-2">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th>Name:</th>
+                                <td> {{client.name}} </td>
+                            </tr>
+                            <tr>
+                                <th>Address:</th>
+                                <td> {{client.address}} </td>
+                            </tr>
+                            <tr>
+                                <th>Remarks:</th>
+                                <td> {{client.remarks}} </td>
+                            </tr>
+                        </tbody>   
+                    </table>
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}
+
+
+
