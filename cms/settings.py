@@ -132,3 +132,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
+
+STATIC_ROOT = BASE_DIR / 'static'
+STATICFILESDIRS = [
+    BASE_DIR / 'client/static'
+]

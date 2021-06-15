@@ -1,28 +1,56 @@
 from django.shortcuts import render, redirect
-from .models import Client
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
+from .models import Client, User
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView, View
 from django.urls import reverse_lazy, reverse
 from .forms import *
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-class ClientListView(ListView):
+def logout_view(request):
+    logout(request)
+    return redirect('client:login')
+
+class LoginView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'client/login.html')
+
+    def post(self, request, *args, **kwargs):
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('client:client-list')
+        else:
+            messages.warning(request, "Invalid username or password")
+        return render(request, 'client/login.html')
+
+
+class ClientListView(LoginRequiredMixin, ListView):
+    login_url = '/login/'
     model = Client
     
-class ClientDetailView(DetailView):
+class ClientDetailView(LoginRequiredMixin, DetailView):
+    login_url = '/login/'
     model = Client
     
 
-class ClientUpdateView(UpdateView):
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = '/login/'
     model = Client
     fields = '__all__'
     success_url = reverse_lazy('client:client-list')
     
-class ClientDeleteView(DeleteView):
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
+    login_url = '/login/'
     model = Client
     success_url = reverse_lazy('client:client-list')
 
-
+@login_required
 def client_create(request):
     client_form = ClientForm
     client_file = ClientFilesForm
