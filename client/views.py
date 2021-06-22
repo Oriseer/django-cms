@@ -31,26 +31,26 @@ class LoginView(View):
 
 
 class ClientListView(LoginRequiredMixin, ListView):
-    login_url = '/login/'
+    login_url = 'client:login'
     model = Client
     
 class ClientDetailView(LoginRequiredMixin, DetailView):
-    login_url = '/login/'
+    login_url = 'client:login'
     model = Client
     
 
 class ClientUpdateView(LoginRequiredMixin, UpdateView):
-    login_url = '/login/'
+    login_url = 'client:login'
     model = Client
     fields = '__all__'
     success_url = reverse_lazy('client:client-list')
     
 class ClientDeleteView(LoginRequiredMixin, DeleteView):
-    login_url = '/login/'
+    login_url = 'client:login'
     model = Client
     success_url = reverse_lazy('client:client-list')
 
-@login_required
+@login_required(login_url='client:login')
 def client_create(request):
     client_form = ClientForm
     client_file = ClientFilesForm
